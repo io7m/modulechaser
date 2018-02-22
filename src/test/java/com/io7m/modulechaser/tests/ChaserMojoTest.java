@@ -8,6 +8,8 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 
+import static io.takari.maven.testing.TestResources.assertFilesPresent;
+
 public final class ChaserMojoTest
 {
   @Rule
@@ -25,6 +27,7 @@ public final class ChaserMojoTest
   {
     final File basedir = this.resources.getBasedir("empty");
     this.maven.executeMojo(basedir, "chaseModules");
+    assertFilesPresent(basedir, "target/modulechaser/modules.xhtml");
   }
 
   @Test
@@ -33,5 +36,6 @@ public final class ChaserMojoTest
   {
     final File basedir = this.resources.getBasedir("jartifact");
     this.maven.executeMojo(basedir, "chaseModules");
+    assertFilesPresent(basedir, "target/modulechaser/modules.xhtml");
   }
 }
