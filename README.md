@@ -10,7 +10,9 @@ Usage
 ===
 
 Create a `pom.xml` file and insert into it all of the dependencies
-you wish to analyze:
+you wish to analyze. The plugin doesn't care what `groupId`, `artifactId`,
+etc, you use. It only looks at the (transitive) dependencies of the
+project:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
