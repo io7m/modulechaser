@@ -75,5 +75,8 @@ Then run the plugin's `chaseModules` goal from the command line:
 $ com.io7m.modulechaser:com.io7m.modulechaser:0.0.1:chaseModules
 ```
 
-The plugin will generate an XHTML report in `target/modulechaser/modules.xhtml`.
+The plugin will generate an XHTML report in
+`target/modulechaser/modules.xhtml`. The plugin currently only analyzes
+dependencies that are in the `compile` scope; it will ignore those in
+`provided` or `test` scopes.
 
