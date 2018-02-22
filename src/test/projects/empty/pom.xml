@@ -10,23 +10,4 @@
   <version>0.1.0</version>
   <packaging>jar</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.io7m.modulechaser</groupId>
-        <artifactId>com.io7m.modulechaser.maven_plugin</artifactId>
-        <version>0.0.1</version>
-        <executions>
-          <execution>
-            <id>chase</id>
-            <goals>
-              <goal>chaseModules</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
 </project>

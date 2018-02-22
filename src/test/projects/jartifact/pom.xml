@@ -147,6 +147,16 @@
             </annotationProcessorPaths>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>com.io7m.modulechaser</groupId>
+          <artifactId>com.io7m.modulechaser</artifactId>
+          <version>0.0.1</version>
+          <configuration>
+            <outputFile>${project.build.directory}/modules.xhtml</outputFile>
+            <outputType>XHTML</outputType>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

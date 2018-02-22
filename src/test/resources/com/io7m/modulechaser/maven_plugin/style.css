@@ -1,0 +1,27 @@
+body {
+  margin-left: 1em;
+  font-family: sans-serif;
+}
+
+.chaser_module_full {
+  background: #aaffaa;
+}
+.chaser_module_auto {
+  background: #ffffaa;
+}
+.chaser_module_unavailable {
+  background: #ffaaaa;
+}
+
+p {
+  max-width: 40em;
+}
+
+td {
+  padding-right: 2em;
+}
+
+tr th {
+  padding-right: 2em;
+  text-align: left;
+}
