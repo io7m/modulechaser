@@ -36,6 +36,6 @@ public final class ChaserMojoTest
   {
     final File basedir = this.resources.getBasedir("jartifact");
     this.maven.executeMojo(basedir, "chaseModules");
-    assertFilesPresent(basedir, "target/modulechaser/modules.xhtml");
+    assertFilesPresent(basedir, "target/modules.xhtml");
   }
 }
