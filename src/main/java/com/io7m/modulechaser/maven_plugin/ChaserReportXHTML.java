@@ -1,5 +1,6 @@
 package com.io7m.modulechaser.maven_plugin;
 
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -176,8 +177,62 @@ public final class ChaserReportXHTML
     final Element root = doc.createElement("div");
     doc.appendChild(root);
 
+    root.appendChild(buildDependencyTable(report, doc));
+    root.appendChild(buildDependencyTree(report, doc));
+    return doc;
+  }
+
+  private static Element buildDependencyTree(
+    final ChaserReport report,
+    final Document doc)
+  {
+    final Element root = doc.createElement("div");
+    final Element h2 = doc.createElement("h2");
+    root.appendChild(h2);
+    h2.setTextContent("Dependency Tree");
+
+    final ChaserDependencyNode root_node = findRootNode(report.graph());
+    root.appendChild(buildDependencyTreeRecursive(report, doc, root_node));
+    return root;
+  }
+
+  private static ChaserDependencyNode findRootNode(
+    final DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph)
+  {
+    return graph.vertexSet()
+      .stream()
+      .filter(n -> graph.inDegreeOf(n) == 0)
+      .findFirst()
+      .orElseThrow(() -> new IllegalStateException("No root node present!"));
+  }
+
+  private static Element buildDependencyTreeRecursive(
+    final ChaserReport report,
+    final Document doc,
+    final ChaserDependencyNode node)
+  {
+    final Element root = doc.createElement("ul");
+
+    final Element li = doc.createElement("li");
+    root.appendChild(li);
+
+    final Element a = mavenCentralArtifactVersion(doc, node, node.version());
+    a.setTextContent(node.toTerseString());
+    li.appendChild(a);
+
+    final DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph = report.graph();
+    for (final ChaserDependencyEdge edge : graph.outgoingEdgesOf(node)) {
+      li.appendChild(buildDependencyTreeRecursive(report, doc, edge.target()));
+    }
+
+    return root;
+  }
+
+  private static Element buildDependencyTable(
+    final ChaserReport report,
+    final Document doc)
+  {
     final Element table = doc.createElement("table");
-    root.appendChild(table);
 
     {
       final Element thead = doc.createElement("thead");
@@ -316,7 +371,8 @@ public final class ChaserReportXHTML
         }
       }
     }
-    return doc;
+
+    return table;
   }
 
   private static Element mavenCentralArtifactVersion(
