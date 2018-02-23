@@ -56,7 +56,7 @@ final class ChaserResolvers
         node.group(),
         node.artifact(),
         node.version(),
-        "compile",
+        node.scope(),
         node.type(),
         node.classifier().orElse(null),
         handler);
@@ -75,7 +75,9 @@ final class ChaserResolvers
     Collections.sort(versions);
 
     if (versions.isEmpty()) {
-      throw new ArtifactResolverException("No version available for " + node.toTerseString(), new IOException());
+      throw new ArtifactResolverException(
+        "No version available for " + node.toTerseString(),
+        new IOException("No available versions"));
     }
 
     final ArtifactVersion highest = versions.get(versions.size() - 1);
@@ -91,7 +93,7 @@ final class ChaserResolvers
         node.group(),
         node.artifact(),
         highest.toString(),
-        "compile",
+        node.scope(),
         node.type(),
         node.classifier().orElse(null),
         handler);

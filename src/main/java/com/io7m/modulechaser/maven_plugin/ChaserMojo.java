@@ -1,5 +1,6 @@
 package com.io7m.modulechaser.maven_plugin;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -47,6 +48,12 @@ public final class ChaserMojo extends AbstractMojo
     name = "outputType",
     property = "modulechaser.outputType")
   private String outputType;
+
+  @Parameter(
+    required = true,
+    name = "scopes",
+    property = "modulechaser.scopes")
+  private String[] scopes;
 
   @Parameter(
     defaultValue = "${project}",
@@ -111,6 +118,10 @@ public final class ChaserMojo extends AbstractMojo
     Objects.requireNonNull(
       this.metadataSource, "this.metadataSource");
 
+    if (this.scopes.length == 0) {
+      this.scopes = new String[] { "compile", "provided", "runtime" };
+    }
+
     final SerializerType serialize = this.getSerializer();
     final Log log = this.getLog();
 
@@ -120,13 +131,10 @@ public final class ChaserMojo extends AbstractMojo
 
     request.setProject(this.project);
 
-    final ArtifactFilter filter =
-      artifact -> Objects.equals(artifact.getScope(), "compile");
-
     try {
       final DependencyNode node =
         this.dependencyGraphBuilder.buildDependencyGraph(
-          request, filter, this.reactorProjects);
+          request, this::filterArtifact, this.reactorProjects);
       final DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph =
         ChaserGraphs.graphOf(node);
 
@@ -147,6 +155,18 @@ public final class ChaserMojo extends AbstractMojo
     } catch (final Exception e) {
       throw new MojoExecutionException(e.getMessage(), e);
     }
+  }
+
+  private boolean filterArtifact(final Artifact artifact)
+  {
+    for (final String scope : this.scopes) {
+      final String a_scope = artifact.getScope().toUpperCase();
+      final String s_scope = scope.toUpperCase();
+      if (Objects.equals(s_scope, a_scope)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private SerializerType getSerializer()

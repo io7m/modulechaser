@@ -50,11 +50,16 @@ public final class ChaserGraphs
     final DependencyNode node)
   {
     final Artifact artifact = node.getArtifact();
+
+    final String scope =
+      artifact.getScope() != null ? artifact.getScope() : "compile";
+
     return ChaserDependencyNode.of(
       artifact.getGroupId(),
       artifact.getArtifactId(),
       artifact.getVersion(),
       Optional.ofNullable(artifact.getClassifier()),
-      artifact.getType());
+      artifact.getType(),
+      scope);
   }
 }

@@ -26,6 +26,10 @@ public interface ChaserDependencyNodeType
   @Value.Parameter
   String type();
 
+  @Value.Auxiliary
+  @Value.Parameter
+  String scope();
+
   default String toTerseString()
   {
     return new StringBuilder(64)
