@@ -132,32 +132,118 @@ public final class ChaserReportXHTML
       body_header.appendChild(h1);
       h1.setTextContent("Modularization Status");
 
-      {
-        final Element p = doc.createElement("p");
-        body_header.appendChild(p);
-        p.setTextContent(
-          new StringBuilder(128)
-            .append("Dependencies are given in reverse-topological order.")
-            .append(System.lineSeparator())
-            .append("That is, for the tree of dependencies that were analyzed to produce this report, ")
-            .append("the artifacts closest to the leaves of the tree are given first.")
-            .append("This is the most efficient order in which to contact package maintainers ")
-            .append("to beg for modularization: If package A depends on package B, then A cannot be ")
-            .append("fully modularized before B and therefore B's maintainer should be contacted first.")
-            .toString());
-      }
-
-      {
-        final Element p = doc.createElement("p");
-        body_header.appendChild(p);
-        p.setTextContent("Last Generated: " +
-                           ZonedDateTime.now(ZoneId.of("UTC"))
-                             .format(ISO_ZONED_DATE_TIME));
-      }
+      body_header.appendChild(buildExplanatoryTest(doc));
+      body_header.appendChild(buildStatisticsList(report, doc));
+      body_header.appendChild(buildLastGenerated(doc));
     }
 
     body.appendChild(doc.importNode(core_doc.getDocumentElement(), true));
     return doc;
+  }
+
+  private static Element buildExplanatoryTest(final Document doc)
+  {
+    final Element p = doc.createElement("p");
+
+    p.setTextContent(
+      new StringBuilder(128)
+        .append("Dependencies are given in reverse-topological order.")
+        .append(System.lineSeparator())
+        .append(
+          "That is, for the tree of dependencies that were analyzed to produce this report, ")
+        .append(
+          "the artifacts closest to the leaves of the tree are given first.")
+        .append(
+          "This is the most efficient order in which to contact package maintainers ")
+        .append(
+          "to beg for modularization: If package A depends on package B, then A cannot be ")
+        .append(
+          "fully modularized before B and therefore B's maintainer should be contacted first.")
+        .toString());
+    return p;
+  }
+
+  private static Element buildLastGenerated(final Document doc)
+  {
+    final Element p = doc.createElement("p");
+    p.setTextContent("Last Generated: " +
+                       ZonedDateTime.now(ZoneId.of("UTC"))
+                         .format(ISO_ZONED_DATE_TIME));
+    return p;
+  }
+
+  private static Element buildStatisticsList(
+    final ChaserReport report,
+    final Document doc)
+  {
+    final Element ul = doc.createElement("ul");
+    final long total = report.dependenciesTotal();
+    final long fully = report.dependenciesFullyModularized();
+    final long named = report.dependenciesNamed();
+    final long not_ready = report.dependenciesNotModularized();
+    final double jlink = ((double) fully / (double) total) * 100.0;
+    final double safe = ((double) (fully + named) / (double) total) * 100.0;
+
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append("Analyzed ")
+                          .append(total)
+                          .append(" dependencies")
+                          .toString());
+    }
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append(fully)
+                          .append(" dependencies are fully modularized")
+                          .toString());
+    }
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append(named)
+                          .append(
+                            " dependencies have Automatic-Module-Name entries")
+                          .toString());
+    }
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append(not_ready)
+                          .append(
+                            " dependencies have not been modularized at all")
+                          .toString());
+    }
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append(String.format("%.02f", Double.valueOf(jlink)))
+                          .append(
+                            "% of the dependencies are ready to be used in jlink distributions")
+                          .toString());
+    }
+
+    {
+      final Element li = doc.createElement("li");
+      ul.appendChild(li);
+      li.setTextContent(new StringBuilder(128)
+                          .append(String.format("%.02f", Double.valueOf(safe)))
+                          .append(
+                            "% of the dependencies are safe to use as dependencies for modular projects")
+                          .toString());
+    }
+    return ul;
   }
 
   public static Document buildXHTMLCore(
