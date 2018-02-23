@@ -64,6 +64,14 @@ public final class ChaserJPMSJar
     }
 
     final Manifest manifest = this.jar.getManifest();
+    if (manifest == null) {
+      /*
+       * There actually are completely broken jars in Maven Central that
+       * do not contain manifests at all: javax.inject:javax.inject:1
+       */
+      return Optional.empty();
+    }
+
     final Attributes attributes = manifest.getMainAttributes();
     final String name = attributes.getValue("Automatic-Module-Name");
     if (name != null) {
