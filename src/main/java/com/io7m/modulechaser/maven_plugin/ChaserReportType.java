@@ -27,7 +27,8 @@ public interface ChaserReportType
       .stream()
       .filter(report -> report instanceof ChaserReportDependencyOK)
       .map(report -> (ChaserReportDependencyOK) report)
-      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(!m.isAutomatic())).orElse(Boolean.FALSE).booleanValue())
+      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(!m.isAutomatic())).orElse(
+        Boolean.FALSE).booleanValue())
       .count();
   }
 
@@ -38,7 +39,8 @@ public interface ChaserReportType
       .stream()
       .filter(report -> report instanceof ChaserReportDependencyOK)
       .map(report -> (ChaserReportDependencyOK) report)
-      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(m.isAutomatic())).orElse(Boolean.FALSE).booleanValue())
+      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(m.isAutomatic())).orElse(
+        Boolean.FALSE).booleanValue())
       .count();
   }
 

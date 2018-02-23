@@ -3,7 +3,6 @@ package com.io7m.modulechaser.maven_plugin;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -93,14 +92,6 @@ public final class ChaserMojo extends AbstractMojo
 
   }
 
-  private interface SerializerType
-  {
-    void serialize(
-      Path output,
-      ChaserReport report)
-      throws Exception;
-  }
-
   @Override
   public void execute()
     throws MojoExecutionException, MojoFailureException
@@ -119,7 +110,7 @@ public final class ChaserMojo extends AbstractMojo
       this.metadataSource, "this.metadataSource");
 
     if (this.scopes.length == 0) {
-      this.scopes = new String[] { "compile", "provided", "runtime" };
+      this.scopes = new String[]{"compile", "provided", "runtime"};
     }
 
     final SerializerType serialize = this.getSerializer();
@@ -201,5 +192,13 @@ public final class ChaserMojo extends AbstractMojo
       }
     }
     return serialize;
+  }
+
+  private interface SerializerType
+  {
+    void serialize(
+      Path output,
+      ChaserReport report)
+      throws Exception;
   }
 }

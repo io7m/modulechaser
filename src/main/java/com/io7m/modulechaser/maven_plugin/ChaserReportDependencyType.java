@@ -6,14 +6,15 @@ import java.util.Optional;
 
 public interface ChaserReportDependencyType
 {
-  enum Kind {
-    OK,
-    ERROR
-  }
-
   ChaserDependencyNode node();
 
   Kind kind();
+
+  enum Kind
+  {
+    OK,
+    ERROR
+  }
 
   @ChaserImmutableStyleType
   @Value.Immutable

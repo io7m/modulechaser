@@ -8,7 +8,6 @@ import org.objectweb.asm.tree.ModuleNode;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.module.ModuleReader;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.jar.Attributes;
@@ -28,26 +27,6 @@ public final class ChaserJPMSJar
   public static ChaserJPMSJar ofJar(final JarFile jar)
   {
     return new ChaserJPMSJar(jar);
-  }
-
-  private static final class ModuleReader extends ClassVisitor
-  {
-    private ModuleNode module;
-
-    ModuleReader()
-    {
-      super(Opcodes.ASM6);
-    }
-
-    @Override
-    public ModuleVisitor visitModule(
-      final String name,
-      final int access,
-      final String version)
-    {
-      this.module = new ModuleNode(name, access, version);
-      return this.module;
-    }
   }
 
   public Optional<ChaserJPMSModuleName> moduleName()
@@ -78,5 +57,25 @@ public final class ChaserJPMSJar
       return Optional.of(ChaserJPMSModuleName.of(name, true));
     }
     return Optional.empty();
+  }
+
+  private static final class ModuleReader extends ClassVisitor
+  {
+    private ModuleNode module;
+
+    ModuleReader()
+    {
+      super(Opcodes.ASM6);
+    }
+
+    @Override
+    public ModuleVisitor visitModule(
+      final String name,
+      final int access,
+      final String version)
+    {
+      this.module = new ModuleNode(name, access, version);
+      return this.module;
+    }
   }
 }

@@ -58,9 +58,15 @@ public final class ChaserReportPlain
         switch (node_report.kind()) {
           case OK: {
             final ChaserReportDependencyOK ok = (ChaserReportDependencyOK) node_report;
-            writer.append(showModuleStatus("current", node.version(),  ok.currentModule()));
+            writer.append(showModuleStatus(
+              "current",
+              node.version(),
+              ok.currentModule()));
             writer.append(", ");
-            writer.append(showModuleStatus("latest", ok.highestVersion(),  ok.highestModule()));
+            writer.append(showModuleStatus(
+              "latest",
+              ok.highestVersion(),
+              ok.highestModule()));
             break;
           }
           case ERROR: {

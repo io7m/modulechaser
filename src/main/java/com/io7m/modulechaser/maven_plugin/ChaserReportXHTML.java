@@ -17,6 +17,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.SortedMap;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
 public final class ChaserReportXHTML
@@ -302,7 +305,8 @@ public final class ChaserReportXHTML
     final Element li = doc.createElement("li");
     root.appendChild(li);
 
-    final Element a = mavenCentralArtifactVersion(doc, node, node.version());
+    final Element a = doc.createElement("a");
+    a.setAttribute("href", "#" + nodeId(node));
     a.setTextContent(node.toTerseString());
     li.appendChild(a);
 
@@ -312,6 +316,20 @@ public final class ChaserReportXHTML
     }
 
     return root;
+  }
+
+  private static String nodeId(
+    final ChaserDependencyNode node)
+  {
+    try {
+      final MessageDigest digest =
+        MessageDigest.getInstance("SHA-256");
+      final byte[] result =
+        digest.digest(node.toTerseString().getBytes(US_ASCII));
+      return Hex.show(result);
+    } catch (final NoSuchAlgorithmException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   private static Element buildDependencyTable(
@@ -383,6 +401,7 @@ public final class ChaserReportXHTML
 
       final Element tr = doc.createElement("tr");
       table_body.appendChild(tr);
+      tr.setAttribute("id", nodeId(node));
 
       {
         final Element td = doc.createElement("td");
