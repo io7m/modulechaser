@@ -326,7 +326,7 @@ public final class ChaserReportXHTML
         MessageDigest.getInstance("SHA-256");
       final byte[] result =
         digest.digest(node.toTerseString().getBytes(US_ASCII));
-      return Hex.show(result);
+      return "dep_" + Hex.show(result);
     } catch (final NoSuchAlgorithmException e) {
       throw new IllegalStateException(e);
     }
