@@ -6,6 +6,12 @@ modulechaser
 
 ![modulechaser](./src/site/resources/modulechaser.jpg?raw=true)
 
+Requirements
+===
+
+* Maven 3.5.0
+* JDK 9+
+
 Usage
 ===
 
