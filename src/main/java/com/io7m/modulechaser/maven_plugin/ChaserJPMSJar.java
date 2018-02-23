@@ -8,9 +8,12 @@ import org.objectweb.asm.tree.ModuleNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.module.ModuleReader;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
 public final class ChaserJPMSJar
@@ -60,10 +63,12 @@ public final class ChaserJPMSJar
       }
     }
 
-    return Optional.ofNullable(
-      (String) this.jar.getManifest()
-        .getMainAttributes()
-        .get("Automatic-Module-Name"))
-      .map(raw -> ChaserJPMSModuleName.of(raw, true));
+    final Manifest manifest = this.jar.getManifest();
+    final Attributes attributes = manifest.getMainAttributes();
+    final String name = attributes.getValue("Automatic-Module-Name");
+    if (name != null) {
+      return Optional.of(ChaserJPMSModuleName.of(name, true));
+    }
+    return Optional.empty();
   }
 }
