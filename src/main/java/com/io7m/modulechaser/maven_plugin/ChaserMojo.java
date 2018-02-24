@@ -173,20 +173,13 @@ public final class ChaserMojo extends AbstractMojo
         };
         break;
       }
-      case "PLAIN": {
-        serialize = (path, report) -> {
-          try (OutputStream output = Files.newOutputStream(path)) {
-            ChaserReportPlain.writePlain(report, output);
-          }
-        };
-        break;
-      }
+
       default: {
         throw new MojoFailureException(
           new StringBuilder(64)
             .append("Unsupported output type")
             .append(System.lineSeparator())
-            .append("  Use: XHTML or PLAIN")
+            .append("  Use: XHTML")
             .append(System.lineSeparator())
             .toString());
       }
