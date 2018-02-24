@@ -125,6 +125,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jboss.spec</groupId>
+      <artifactId>jboss-javaee-7.0</artifactId>
+      <version>1.1.1.Final</version>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl-opengl</artifactId>
       <version>3.1.6</version>

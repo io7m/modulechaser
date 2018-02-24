@@ -13,7 +13,7 @@ public interface ChaserReportType
   DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph();
 
   @Value.Parameter
-  SortedMap<ChaserDependencyNode, ChaserReportDependencyType> reports();
+  SortedMap<ChaserDependencyNode, ChaserReportDependency> reports();
 
   default long dependenciesTotal()
   {
@@ -25,10 +25,7 @@ public interface ChaserReportType
     return this.reports()
       .values()
       .stream()
-      .filter(report -> report instanceof ChaserReportDependencyOK)
-      .map(report -> (ChaserReportDependencyOK) report)
-      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(!m.isAutomatic())).orElse(
-        Boolean.FALSE).booleanValue())
+      .filter(report -> report.statusHighest() instanceof ChaserModularizationStatusModularizedFully)
       .count();
   }
 
@@ -37,10 +34,7 @@ public interface ChaserReportType
     return this.reports()
       .values()
       .stream()
-      .filter(report -> report instanceof ChaserReportDependencyOK)
-      .map(report -> (ChaserReportDependencyOK) report)
-      .filter(report -> report.highestModule().map(m -> Boolean.valueOf(m.isAutomatic())).orElse(
-        Boolean.FALSE).booleanValue())
+      .filter(report -> report.statusHighest() instanceof ChaserModularizationStatusModularizedAutomaticModuleName)
       .count();
   }
 
@@ -49,9 +43,7 @@ public interface ChaserReportType
     return this.reports()
       .values()
       .stream()
-      .filter(report -> report instanceof ChaserReportDependencyOK)
-      .map(report -> (ChaserReportDependencyOK) report)
-      .filter(report -> !report.highestModule().isPresent())
+      .filter(report -> report.statusHighest() instanceof ChaserModularizationStatusNotModularized)
       .count();
   }
 }

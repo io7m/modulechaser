@@ -9,6 +9,12 @@ body {
 .chaser_module_automatic {
   background: #ffffaa;
 }
+.chaser_module_not_modularized {
+  background: #ffaaaa;
+}
+.chaser_module_not_jar {
+  background: #eeeeee;
+}
 .chaser_module_unavailable {
   background: #ffaaaa;
 }

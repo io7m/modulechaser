@@ -6,6 +6,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -381,7 +382,7 @@ public final class ChaserReportXHTML
       }
     }
 
-    final SortedMap<ChaserDependencyNode, ChaserReportDependencyType> reports =
+    final SortedMap<ChaserDependencyNode, ChaserReportDependency> reports =
       report.reports();
     final TopologicalOrderIterator<ChaserDependencyNode, ChaserDependencyEdge> iter =
       new TopologicalOrderIterator<>(report.graph());
@@ -415,69 +416,115 @@ public final class ChaserReportXHTML
         td.appendChild(mavenCentralArtifact(doc, node));
       }
 
-      {
-        final Element td = doc.createElement("td");
-        tr.appendChild(td);
-        td.appendChild(mavenCentralArtifactVersion(doc, node, node.version()));
-      }
-
-      switch (node_report.kind()) {
-        case OK: {
-          final ChaserReportDependencyOK ok =
-            (ChaserReportDependencyOK) node_report;
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            createStatusCell(td, ok.currentModule());
-          }
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            td.appendChild(
-              mavenCentralArtifactVersion(doc, node, ok.highestVersion()));
-          }
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            createStatusCell(td, ok.highestModule());
-          }
-
-          break;
-        }
-        case ERROR: {
-          final ChaserReportDependencyError error =
-            (ChaserReportDependencyError) node_report;
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            td.setAttribute("class", "chaser_module_unavailable");
-            td.setTextContent("Unavailable");
-          }
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            td.setAttribute("class", "chaser_module_unavailable");
-            td.setTextContent("Unavailable");
-          }
-
-          {
-            final Element td = doc.createElement("td");
-            tr.appendChild(td);
-            td.setAttribute("class", "chaser_module_unavailable");
-            td.setTextContent("Unavailable");
-          }
-
-          break;
-        }
-      }
+      tr.appendChild(versionCell(doc, node, node_report.statusCurrent()));
+      tr.appendChild(statusCell(doc, node_report.statusCurrent()));
+      tr.appendChild(versionCell(doc, node, node_report.statusHighest()));
+      tr.appendChild(statusCell(doc, node_report.statusHighest()));
     }
 
     return table;
+  }
+
+  private static Element versionCell(
+    final Document doc,
+    final ChaserDependencyNode node,
+    final ChaserModularizationStatusType status_input)
+  {
+    switch (status_input.kind()) {
+      case MODULARIZED_FULLY: {
+        final ChaserModularizationStatusModularizedFully status =
+          (ChaserModularizationStatusModularizedFully) status_input;
+
+        final Element td = doc.createElement("td");
+        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        return td;
+      }
+
+      case MODULARIZED_AUTOMATIC_MODULE_NAME: {
+        final ChaserModularizationStatusModularizedAutomaticModuleName status =
+          (ChaserModularizationStatusModularizedAutomaticModuleName) status_input;
+
+        final Element td = doc.createElement("td");
+        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        return td;
+      }
+
+      case NOT_MODULARIZED: {
+        final ChaserModularizationStatusNotModularized status =
+          (ChaserModularizationStatusNotModularized) status_input;
+
+        final Element td = doc.createElement("td");
+        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        return td;
+      }
+
+      case NOT_JAR: {
+        final ChaserModularizationStatusNotJar status =
+          (ChaserModularizationStatusNotJar) status_input;
+
+        final Element td = doc.createElement("td");
+        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        return td;
+      }
+
+      case UNAVAILABLE: {
+        final Element td = doc.createElement("td");
+        td.setTextContent("Unavailable");
+        return td;
+      }
+    }
+
+    throw new IllegalStateException("Unreachable code");
+  }
+
+  private static Element statusCell(
+    final Document doc,
+    final ChaserModularizationStatusType status_input)
+  {
+    switch (status_input.kind()) {
+      case MODULARIZED_FULLY: {
+        final ChaserModularizationStatusModularizedFully status =
+          (ChaserModularizationStatusModularizedFully) status_input;
+
+        final Element td = doc.createElement("td");
+        td.setAttribute("class", "chaser_module_full");
+        td.setTextContent("Modularized: " + status.moduleName());
+        return td;
+      }
+
+      case MODULARIZED_AUTOMATIC_MODULE_NAME: {
+        final ChaserModularizationStatusModularizedAutomaticModuleName status =
+          (ChaserModularizationStatusModularizedAutomaticModuleName) status_input;
+
+        final Element td = doc.createElement("td");
+        td.setAttribute("class", "chaser_module_automatic");
+        td.setTextContent("Automatic Module: " + status.moduleName());
+        return td;
+      }
+
+      case NOT_MODULARIZED: {
+        final Element td = doc.createElement("td");
+        td.setAttribute("class", "chaser_module_not_modularized");
+        td.setTextContent("Not modularized");
+        return td;
+      }
+
+      case NOT_JAR: {
+        final Element td = doc.createElement("td");
+        td.setAttribute("class", "chaser_module_not_jar");
+        td.setTextContent("Not A Jar");
+        return td;
+      }
+
+      case UNAVAILABLE: {
+        final Element td = doc.createElement("td");
+        td.setAttribute("class", "chaser_module_unavailable");
+        td.setTextContent("Unavailable");
+        return td;
+      }
+    }
+
+    throw new IllegalStateException("Unreachable code");
   }
 
   private static Element mavenCentralArtifactVersion(
@@ -533,25 +580,5 @@ public final class ChaserReportXHTML
         .toString());
     a.setTextContent(node.group());
     return a;
-  }
-
-  private static void createStatusCell(
-    final Element td,
-    final Optional<ChaserJPMSModuleName> mn)
-  {
-    mn.ifPresentOrElse(
-      module_name -> {
-        if (module_name.isAutomatic()) {
-          td.setAttribute("class", "chaser_module_automatic");
-          td.setTextContent("Automatic Module: " + module_name.name());
-        } else {
-          td.setAttribute("class", "chaser_module_full");
-          td.setTextContent("Modularized: " + module_name.name());
-        }
-      },
-      () -> {
-        td.setAttribute("class", "chaser_module_unavailable");
-        td.setTextContent("Not modularized");
-      });
   }
 }
