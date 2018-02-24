@@ -8,9 +8,11 @@ import org.objectweb.asm.tree.ModuleNode;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
@@ -32,8 +34,13 @@ public final class ChaserJPMSJar
   public Optional<ChaserJPMSModuleName> moduleName()
     throws IOException
   {
-    final ZipEntry entry = this.jar.getEntry("module-info.class");
-    if (entry != null) {
+    final Optional<JarEntry> entry_opt =
+      this.jar.stream()
+        .filter(e -> e.getName().endsWith("module-info.class"))
+        .max(Comparator.comparing(JarEntry::getName));
+
+    if (entry_opt.isPresent()) {
+      final JarEntry entry = entry_opt.get();
       try (InputStream stream = this.jar.getInputStream(entry)) {
         final ClassReader reader = new ClassReader(stream);
         final ModuleReader visitor = new ModuleReader();
