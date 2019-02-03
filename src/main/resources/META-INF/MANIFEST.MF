@@ -1,0 +1,17 @@
+Manifest-Version: 1
+Automatic-Module-Name: ${project.artifactId}
+Built-By: ${io7m.jar.built_by}
+Bundle-Description: ${project.description}
+Bundle-DocURL: ${project.distributionManagement.site.url}
+Bundle-Name: ${project.artifactId} ${project.version}
+Bundle-SCM: ${project.scm.url}
+Bundle-Vendor: ${io7m.jar.vendor}
+Implementation-Build: ${buildNumber}
+Implementation-Title: ${project.name}
+Implementation-Vendor: ${io7m.jar.vendor}
+Implementation-Vendor-Id: ${project.groupId}
+Implementation-Version: ${project.version}
+Sealed: true
+Specification-Title: ${project.name}
+Specification-Vendor: ${io7m.jar.vendor}
+Specification-Version: ${project.version}
