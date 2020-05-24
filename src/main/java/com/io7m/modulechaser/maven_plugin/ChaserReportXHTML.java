@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2020 <code@io7m.com> https://www.io7m.com
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
 package com.io7m.modulechaser.maven_plugin;
 
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -6,7 +22,6 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.SortedMap;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -170,9 +184,9 @@ public final class ChaserReportXHTML
   private static Element buildLastGenerated(final Document doc)
   {
     final Element p = doc.createElement("p");
-    p.setTextContent("Last Generated: " +
-                       ZonedDateTime.now(ZoneId.of("UTC"))
-                         .format(ISO_ZONED_DATE_TIME));
+    final String timeString =
+      ZonedDateTime.now(ZoneId.of("UTC")).format(ISO_ZONED_DATE_TIME);
+    p.setTextContent("Last Generated: " + timeString);
     return p;
   }
 
@@ -436,7 +450,10 @@ public final class ChaserReportXHTML
           (ChaserModularizationStatusModularizedFully) status_input;
 
         final Element td = doc.createElement("td");
-        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        td.appendChild(mavenCentralArtifactVersion(
+          doc,
+          node,
+          status.version()));
         return td;
       }
 
@@ -445,7 +462,10 @@ public final class ChaserReportXHTML
           (ChaserModularizationStatusModularizedAutomaticModuleName) status_input;
 
         final Element td = doc.createElement("td");
-        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        td.appendChild(mavenCentralArtifactVersion(
+          doc,
+          node,
+          status.version()));
         return td;
       }
 
@@ -454,7 +474,10 @@ public final class ChaserReportXHTML
           (ChaserModularizationStatusNotModularized) status_input;
 
         final Element td = doc.createElement("td");
-        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        td.appendChild(mavenCentralArtifactVersion(
+          doc,
+          node,
+          status.version()));
         return td;
       }
 
@@ -463,7 +486,10 @@ public final class ChaserReportXHTML
           (ChaserModularizationStatusNotJar) status_input;
 
         final Element td = doc.createElement("td");
-        td.appendChild(mavenCentralArtifactVersion(doc, node, status.version()));
+        td.appendChild(mavenCentralArtifactVersion(
+          doc,
+          node,
+          status.version()));
         return td;
       }
 

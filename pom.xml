@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.full</artifactId>
-    <version>4.0.1</version>
+    <version>5.0.0</version>
   </parent>
 
   <groupId>com.io7m.modulechaser</groupId>
@@ -18,10 +18,7 @@
   <url>http://github.com/io7m/modulechaser</url>
 
   <properties>
-    <io7m.checkstyle.artifact>com.io7m.modulechaser.checkstyle</io7m.checkstyle.artifact>
-    <io7m.checkstyle.path>/com/io7m/modulechaser/checkstyle/checkstyle.xml</io7m.checkstyle.path>
     <io7m.api.previousVersion>0.0.2</io7m.api.previousVersion>
-
     <mdep.analyze.skip>true</mdep.analyze.skip>
   </properties>
 
