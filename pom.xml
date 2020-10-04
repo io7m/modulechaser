@@ -66,8 +66,8 @@
   </distributionManagement>
 
   <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/io7m/modulechaser</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/modulechaser/actions</url>
   </ciManagement>
 
   <prerequisites>
