@@ -18,12 +18,24 @@ package com.io7m.modulechaser.maven_plugin;
 
 import org.immutables.value.Value;
 
+/**
+ * A JPMS module name.
+ */
+
 @ChaserImmutableStyleType
 @Value.Immutable
 public interface ChaserJPMSModuleNameType
 {
+  /**
+   * @return The module name
+   */
+
   @Value.Parameter
   String name();
+
+  /**
+   * @return {@code true} if the module name is an automatic module name
+   */
 
   @Value.Parameter
   boolean isAutomatic();

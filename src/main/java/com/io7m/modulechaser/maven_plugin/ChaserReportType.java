@@ -21,20 +21,40 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 
 import java.util.SortedMap;
 
+/**
+ * A full dependency report.
+ */
+
 @ChaserImmutableStyleType
 @Value.Immutable
 public interface ChaserReportType
 {
+  /**
+   * @return The dependency graph
+   */
+
   @Value.Parameter
   DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph();
 
+  /**
+   * @return The set of reports, per each dependency
+   */
+
   @Value.Parameter
   SortedMap<ChaserDependencyNode, ChaserReportDependency> reports();
+
+  /**
+   * @return The number of dependencies
+   */
 
   default long dependenciesTotal()
   {
     return this.reports().size();
   }
+
+  /**
+   * @return The number of dependencies that are JPMS modules
+   */
 
   default long dependenciesFullyModularized()
   {
@@ -45,6 +65,10 @@ public interface ChaserReportType
       .count();
   }
 
+  /**
+   * @return The number of dependencies that use automatically named modules
+   */
+
   default long dependenciesNamed()
   {
     return this.reports()
@@ -53,6 +77,10 @@ public interface ChaserReportType
       .filter(report -> report.statusHighest() instanceof ChaserModularizationStatusModularizedAutomaticModuleName)
       .count();
   }
+
+  /**
+   * @return The number of dependencies that are not modularized
+   */
 
   default long dependenciesNotModularized()
   {

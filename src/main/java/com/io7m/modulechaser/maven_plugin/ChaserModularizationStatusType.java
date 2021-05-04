@@ -20,18 +20,58 @@ import org.immutables.value.Value;
 
 import java.util.Optional;
 
+/**
+ * The modularization status of a dependency.
+ */
+
 public interface ChaserModularizationStatusType
 {
+  /**
+   * @return The status kind
+   */
+
   Kind kind();
+
+  /**
+   * The various stages of modularization.
+   */
 
   enum Kind
   {
+    /**
+     * The dependency has a full module-info.java descriptor.
+     */
+
     MODULARIZED_FULLY,
+
+    /**
+     * The dependency has an automatic module name.
+     */
+
     MODULARIZED_AUTOMATIC_MODULE_NAME,
+
+    /**
+     * The dependency is not modularized.
+     */
+
     NOT_MODULARIZED,
+
+    /**
+     * The dependency is not a jar file.
+     */
+
     NOT_JAR,
+
+    /**
+     * The dependency is unavailable.
+     */
+
     UNAVAILABLE
   }
+
+  /**
+   * The dependency has a full module-info.java descriptor.
+   */
 
   @ChaserImmutableStyleType
   @Value.Immutable
@@ -44,12 +84,24 @@ public interface ChaserModularizationStatusType
       return Kind.MODULARIZED_FULLY;
     }
 
+    /**
+     * @return The module name
+     */
+
     @Value.Parameter
     String moduleName();
+
+    /**
+     * @return The module version
+     */
 
     @Value.Parameter
     String version();
   }
+
+  /**
+   * The dependency has an automatic module name.
+   */
 
   @ChaserImmutableStyleType
   @Value.Immutable
@@ -62,12 +114,24 @@ public interface ChaserModularizationStatusType
       return Kind.MODULARIZED_AUTOMATIC_MODULE_NAME;
     }
 
+    /**
+     * @return The module name
+     */
+
     @Value.Parameter
     String moduleName();
+
+    /**
+     * @return The module version
+     */
 
     @Value.Parameter
     String version();
   }
+
+  /**
+   * The dependency is not modularized.
+   */
 
   @ChaserImmutableStyleType
   @Value.Immutable
@@ -80,9 +144,17 @@ public interface ChaserModularizationStatusType
       return Kind.NOT_MODULARIZED;
     }
 
+    /**
+     * @return The module version
+     */
+
     @Value.Parameter
     String version();
   }
+
+  /**
+   * The dependency is not a jar file.
+   */
 
   @ChaserImmutableStyleType
   @Value.Immutable
@@ -95,9 +167,17 @@ public interface ChaserModularizationStatusType
       return Kind.NOT_JAR;
     }
 
+    /**
+     * @return The module version
+     */
+
     @Value.Parameter
     String version();
   }
+
+  /**
+   * The dependency is unavailable.
+   */
 
   @ChaserImmutableStyleType
   @Value.Immutable
@@ -109,6 +189,10 @@ public interface ChaserModularizationStatusType
     {
       return Kind.UNAVAILABLE;
     }
+
+    /**
+     * @return The error encountered
+     */
 
     @Value.Parameter
     Optional<Exception> error();

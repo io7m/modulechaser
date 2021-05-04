@@ -27,6 +27,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+/**
+ * A JPMS jar file.
+ */
+
 public final class ChaserJPMSJar
 {
   private final JarFile jar;
@@ -36,10 +40,24 @@ public final class ChaserJPMSJar
     this.jar = Objects.requireNonNull(inJar, "jar");
   }
 
+  /**
+   * Create a reference to a jar file.
+   *
+   * @param jar The underlying jar file
+   *
+   * @return A JPMS jar file
+   */
+
   public static ChaserJPMSJar ofJar(final JarFile jar)
   {
     return new ChaserJPMSJar(jar);
   }
+
+  /**
+   * @return The JPMS module name, if any
+   *
+   * @throws IOException On errors
+   */
 
   public Optional<ChaserJPMSModuleName> moduleName()
     throws IOException

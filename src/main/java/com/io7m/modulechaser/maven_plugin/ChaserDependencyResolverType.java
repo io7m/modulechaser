@@ -16,8 +16,22 @@
 
 package com.io7m.modulechaser.maven_plugin;
 
+/**
+ * A dependency resolver.
+ */
+
 public interface ChaserDependencyResolverType
 {
+  /**
+   * Resolve the given node.
+   *
+   * @param node The node
+   *
+   * @return The resolved dependency
+   *
+   * @throws Exception On errors
+   */
+
   ChaserDependencyResolved resolve(
     ChaserDependencyNode node)
     throws Exception;

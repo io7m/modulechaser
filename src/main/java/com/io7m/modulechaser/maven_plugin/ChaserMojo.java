@@ -44,6 +44,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The main module chaser plugin mojo.
+ */
+
 @Mojo(
   name = "chaseModules",
   requiresDependencyCollection = ResolutionScope.TEST,
@@ -102,6 +106,10 @@ public final class ChaserMojo extends AbstractMojo
 
   @Component(hint = "maven")
   private ArtifactMetadataSource metadataSource;
+
+  /**
+   * The main module chaser plugin mojo.
+   */
 
   public ChaserMojo()
   {

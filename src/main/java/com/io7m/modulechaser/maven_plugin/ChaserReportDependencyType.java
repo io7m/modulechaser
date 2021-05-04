@@ -18,12 +18,24 @@ package com.io7m.modulechaser.maven_plugin;
 
 import org.immutables.value.Value;
 
+/**
+ * The status of a dependency in a report.
+ */
+
 @ChaserImmutableStyleType
 @Value.Immutable
 public interface ChaserReportDependencyType
 {
+  /**
+   * @return The status of the currently used version
+   */
+
   @Value.Parameter
   ChaserModularizationStatusType statusCurrent();
+
+  /**
+   * @return The status of the highest available version
+   */
 
   @Value.Parameter
   ChaserModularizationStatusType statusHighest();

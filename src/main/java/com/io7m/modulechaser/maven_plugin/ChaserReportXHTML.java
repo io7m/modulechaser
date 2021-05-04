@@ -46,12 +46,26 @@ import java.util.SortedMap;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.time.format.DateTimeFormatter.ISO_ZONED_DATE_TIME;
 
+/**
+ * Functions to generate XHTML pages from reports.
+ */
+
 public final class ChaserReportXHTML
 {
   private ChaserReportXHTML()
   {
 
   }
+
+  /**
+   * Generate an XHTML page from the given report.
+   *
+   * @param report The report
+   * @param stream The output stream
+   *
+   * @throws ParserConfigurationException On XML parser issues
+   * @throws TransformerException         On XML serializer issues
+   */
 
   public static void writeXHTMLPage(
     final ChaserReport report,
@@ -62,6 +76,16 @@ public final class ChaserReportXHTML
     Objects.requireNonNull(stream, "stream");
     serializeDocument(stream, buildXHTMLPage(report));
   }
+
+  /**
+   * Generate an XHTML element from the given report.
+   *
+   * @param report The report
+   * @param stream The output stream
+   *
+   * @throws ParserConfigurationException On XML parser issues
+   * @throws TransformerException         On XML serializer issues
+   */
 
   public static void writeXHTMLCore(
     final ChaserReport report,
@@ -100,6 +124,16 @@ public final class ChaserReportXHTML
 
     transformer.transform(new DOMSource(document), new StreamResult(stream));
   }
+
+  /**
+   * Generate an XHTML page from the given report.
+   *
+   * @param report The report
+   *
+   * @return A generated document
+   *
+   * @throws ParserConfigurationException On XML parser issues
+   */
 
   public static Document buildXHTMLPage(
     final ChaserReport report)
@@ -263,6 +297,16 @@ public final class ChaserReportXHTML
     }
     return ul;
   }
+
+  /**
+   * Generate an XHTML page from the given report.
+   *
+   * @param report The report
+   *
+   * @return A generated document
+   *
+   * @throws ParserConfigurationException On XML parser issues
+   */
 
   public static Document buildXHTMLCore(
     final ChaserReport report)

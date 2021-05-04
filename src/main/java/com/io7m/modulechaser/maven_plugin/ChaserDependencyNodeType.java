@@ -22,29 +22,61 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * A node in the dependency graph.
+ */
+
 @ChaserImmutableStyleType
 @Value.Immutable
 public interface ChaserDependencyNodeType
   extends Comparable<ChaserDependencyNodeType>
 {
+  /**
+   * @return The group
+   */
+
   @Value.Parameter
   String group();
+
+  /**
+   * @return The artifact ID
+   */
 
   @Value.Parameter
   String artifact();
 
+  /**
+   * @return The version
+   */
+
   @Value.Parameter
   String version();
+
+  /**
+   * @return The classifier
+   */
 
   @Value.Parameter
   Optional<String> classifier();
 
+  /**
+   * @return The type
+   */
+
   @Value.Parameter
   String type();
+
+  /**
+   * @return The scope
+   */
 
   @Value.Auxiliary
   @Value.Parameter
   String scope();
+
+  /**
+   * @return The node formatted as a terse string
+   */
 
   default String toTerseString()
   {

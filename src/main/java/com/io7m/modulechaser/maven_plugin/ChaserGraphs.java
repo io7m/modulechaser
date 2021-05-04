@@ -19,21 +19,28 @@ package com.io7m.modulechaser.maven_plugin;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.jgrapht.graph.DirectedAcyclicGraph;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Functions handling dependency graphs.
+ */
+
 public final class ChaserGraphs
 {
-  private static final Logger LOG =
-    LoggerFactory.getLogger(ChaserGraphs.class);
-
   private ChaserGraphs()
   {
 
   }
+
+  /**
+   * Create a dependency graph for the given node.
+   *
+   * @param node The root node
+   *
+   * @return A dependency graph
+   */
 
   public static DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graphOf(
     final DependencyNode node)

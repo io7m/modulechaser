@@ -29,6 +29,10 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.jar.JarFile;
 
+/**
+ * Functions to generate reports.
+ */
+
 public final class ChaserReports
 {
   private static final Logger LOG =
@@ -38,6 +42,15 @@ public final class ChaserReports
   {
 
   }
+
+  /**
+   * Generate a report using the resolver and graph.
+   *
+   * @param resolver The resolver
+   * @param graph    The graph
+   *
+   * @return A report
+   */
 
   public static ChaserReport reportOf(
     final ChaserDependencyResolverType resolver,

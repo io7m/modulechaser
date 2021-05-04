@@ -14,4 +14,8 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * Module chasing plugin
+ */
+
 package com.io7m.modulechaser.maven_plugin;

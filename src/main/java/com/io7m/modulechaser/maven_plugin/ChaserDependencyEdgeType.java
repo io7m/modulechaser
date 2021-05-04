@@ -18,12 +18,24 @@ package com.io7m.modulechaser.maven_plugin;
 
 import org.immutables.value.Value;
 
+/**
+ * An edge in a dependency graph.
+ */
+
 @ChaserImmutableStyleType
 @Value.Immutable
 public interface ChaserDependencyEdgeType
 {
+  /**
+   * @return The source node
+   */
+
   @Value.Parameter
   ChaserDependencyNode source();
+
+  /**
+   * @return The target node
+   */
 
   @Value.Parameter
   ChaserDependencyNode target();
