@@ -28,9 +28,9 @@ import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuildingRequest;
 import org.apache.maven.repository.legacy.metadata.DefaultMetadataResolutionRequest;
-import org.apache.maven.shared.artifact.resolve.ArtifactResolver;
-import org.apache.maven.shared.artifact.resolve.ArtifactResolverException;
-import org.apache.maven.shared.artifact.resolve.ArtifactResult;
+import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResolver;
+import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResolverException;
+import org.apache.maven.shared.transfer.artifact.resolve.ArtifactResult;
 
 import java.io.IOException;
 import java.util.Collections;

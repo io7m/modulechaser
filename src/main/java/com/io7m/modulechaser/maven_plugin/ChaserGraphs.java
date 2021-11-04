@@ -48,7 +48,7 @@ public final class ChaserGraphs
     Objects.requireNonNull(node, "node");
 
     final DirectedAcyclicGraph<ChaserDependencyNode, ChaserDependencyEdge> graph =
-      new DirectedAcyclicGraph<>(ChaserDependencyEdge::of);
+      new DirectedAcyclicGraph<>(ChaserDependencyEdge.class);
 
     graphBuild(graph, node);
     return graph;
@@ -64,7 +64,10 @@ public final class ChaserGraphs
     for (final DependencyNode child_node : node.getChildren()) {
       final ChaserDependencyNode child_current = chaserNodeOfNode(child_node);
       graph.addVertex(child_current);
-      graph.addEdge(current, child_current);
+      graph.addEdge(
+        current,
+        child_current,
+        ChaserDependencyEdge.of(current, child_current));
       graphBuild(graph, child_node);
     }
   }
