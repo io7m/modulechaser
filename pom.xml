@@ -15,7 +15,7 @@
   <packaging>maven-plugin</packaging>
   <name>com.io7m.modulechaser</name>
   <description>Module chasing plugin</description>
-  <url>https://github.com/io7m/modulechaser</url>
+  <url>https://www.io7m.com/software/modulechaser</url>
 
   <properties>
     <io7m.api.previousVersion>0.0.2</io7m.api.previousVersion>
@@ -26,7 +26,7 @@
   <licenses>
     <license>
       <name>ISC License</name>
-      <url>https://io7m.com/license/isc.txt</url>
+      <url>https://www.io7m.com/license/isc.txt</url>
     </license>
   </licenses>
 
@@ -41,7 +41,7 @@
       <id>io7m</id>
       <name>io7m</name>
       <email>code@io7m.com</email>
-      <url>https://io7m.com</url>
+      <url>https://www.io7m.com</url>
     </developer>
   </developers>
 
